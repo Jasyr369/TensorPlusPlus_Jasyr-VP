@@ -7,9 +7,9 @@
 #include <numeric>
 #include <algorithm>
 
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 // 1. INTERFAZ DE TRANSFORMACIÓN
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 class Tensor;
 
 class TensorTransform {
@@ -18,9 +18,9 @@ public:
     virtual ~TensorTransform() = default;
 };
 
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 // 2. CLASE TENSOR
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 class Tensor {
 private:
     std::vector<size_t> shape_;
@@ -57,7 +57,7 @@ public:
         }
     }
 
-    // --- REGLA DE LOS 5 ---
+    // +++ REGLA DE LOS 5 +++
 
     ~Tensor() {
         delete[] data_;
@@ -101,7 +101,7 @@ public:
         return *this;
     }
 
-    // --- MÉTODOS ESTÁTICOS ---
+    // +++ MÉTODOS ESTÁTICOS +++
 
     [[nodiscard]] static Tensor zeros(const std::vector<size_t>& shape) {
         return Tensor(shape);
@@ -137,7 +137,7 @@ public:
         return Tensor({vals.size()}, vals);
     }
 
-    // --- SOBRECARGA DE OPERADORES ---
+    // +++ SOBRECARGA DE OPERADORES +++
 
     [[nodiscard]] Tensor operator+(const Tensor& b) const {
         if (shape_ == b.shape_) {
@@ -177,7 +177,7 @@ public:
         return result;
     }
 
-    // --- MODIFICACIÓN DE DIMENSIONES ---
+    // +++ MODIFICACIÓN DE DIMENSIONES +++
 
     [[nodiscard]] Tensor view(const std::vector<size_t>& new_shape) {
         if (new_shape.size() > 3) throw std::invalid_argument("Máximo 3 dimensiones.");
@@ -204,7 +204,7 @@ public:
         return view(new_shape);
     }
 
-    // --- APLICACIÓN DE POLIMORFISMO ---
+    // +++ APLICACIÓN DE POLIMORFISMO +++
 
     [[nodiscard]] Tensor apply(const TensorTransform& transform) const {
         return transform.apply(*this);
@@ -222,9 +222,9 @@ public:
     static Tensor concat(const std::vector<Tensor>& tensors, size_t axis);
 };
 
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 // 3. IMPLEMENTACIONES (Marcadas como inline)
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 
 inline Tensor dot(const Tensor& a, const Tensor& b) {
     if (a.shape_.size() != 1 || b.shape_.size() != 1 || a.size_ != b.size_) {
@@ -291,9 +291,9 @@ inline Tensor Tensor::concat(const std::vector<Tensor>& tensors, size_t axis) {
     return std::move(result);
 }
 
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 // 4. CLASES DERIVADAS (TRANSFORMACIONES)
-// ==========================================
+// ++++++++++++++++++++++++++++++++++++++++++
 
 class ReLU : public TensorTransform {
 public:
